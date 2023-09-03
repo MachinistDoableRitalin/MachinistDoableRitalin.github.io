@@ -1,0 +1,111 @@
+import asyncio
+import time
+from datetime import datetime
+
+import aiofiles
+import httpx
+from bs4 import BeautifulSoup
+from tqdm import tqdm
+
+headers = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/113.0"
+}
+
+
+def get_video_urls(html_text):
+    soup = BeautifulSoup(html_text, "html.parser")
+    data = []
+    for a in soup.find_all("a"):
+        try:
+            video_url = f"https://www.blacktowhite.net{a['data-src']}".replace(
+                "/lightbox", ""
+            )
+            img = f"https://www.blacktowhite.net{a.find('img')['src']}".split(
+                "?"
+            )[0]
+            if video_url and img:
+                data.append([video_url, img])
+        except:
+            pass
+    return data
+
+
+def get_video_source(html_text):
+    soup = BeautifulSoup(html_text, "html.parser")
+    try:
+        video_source_url = [
+            s["src"]
+            for s in soup.find_all("source")
+            if s.has_attr("src") and s["src"] and s["src"]
+        ][0]
+        dt = (
+            datetime.utcfromtimestamp(
+                int([t for t in soup.find_all("time")][0]["data-time"])
+            )
+            .date()
+            .isoformat()
+        )
+        return f"https://www.blacktowhite.net{video_source_url}", dt
+    except:
+        return "", ""
+
+
+async def main(video_type, duration, pages=1):
+    async with aiofiles.open(f"{video_type}-{duration}.html", "a") as f:
+        async with httpx.AsyncClient(follow_redirects=True) as client:
+            for page in range(1, pages + 1):
+                response = await client.get(
+                    f"https://www.blacktowhite.net/{video_type}/page-{page}?order=view_count&direction=desc&type=video&newer_than={duration}",
+                    headers=headers,
+                )
+                for video_url, img in tqdm(get_video_urls(response.text)):
+                    response = await client.get(video_url, headers=headers)
+                    video_source_url, dt = get_video_source(response.text)
+                    await f.write(
+                        f"""
+                    <a href="{video_source_url}" target="_blank">
+                        <img src="{img}" alt="https://www.blacktowhite.net" width="200" height="200">
+                    </a>
+                    """.replace(
+                            "                ", ""
+                        )
+                    )
+                    await f.flush()
+
+
+def get_user_input(arr):
+    user_input = input(
+        "\n".join([f"{i+1} - {val}" for i, val in enumerate(arr)])
+        + f"\n{len(arr) + 1} - all of the above\n\nYour choice: "
+    ).split()
+
+    if str(len(arr) + 1) in user_input:
+        return arr
+    return [val for i, val in enumerate(arr) if str(i + 1) in user_input]
+
+
+video_types = [
+    "blowjob-videos",
+    "fucking-videos",
+    "cuckold-vodeos",
+    "videos",
+]
+
+time_durations = [
+    "last_month",
+    "all",
+]
+
+video_types_input = get_user_input(video_types)
+time_durations_input = {
+    t: int(input(f"No. of pages for {t}: "))
+    for t in get_user_input(time_durations)
+}
+
+for video_type in video_types_input:
+    for duration, no_of_pages in time_durations_input.items():
+        filename = f"{video_type}-{duration}.html"
+        print(f"{filename = }")
+        with open(filename, "w") as f:
+            f.write("")
+        asyncio.run(main(video_type, duration, no_of_pages))
