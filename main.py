@@ -50,10 +50,10 @@ def get_video_source(html_text):
         return "", ""
 
 
-async def main(video_type, duration, pages=1):
+async def main(video_type, duration, pages_range):
     async with aiofiles.open(f"{video_type}-{duration}.html", "a") as f:
         async with httpx.AsyncClient(follow_redirects=True) as client:
-            for page in range(1, pages + 1):
+            for page in pages_range:
                 response = await client.get(
                     f"https://www.blacktowhite.net/{video_type}/page-{page}?order=view_count&direction=desc&type=video&newer_than={duration}",
                     headers=headers,
@@ -63,9 +63,9 @@ async def main(video_type, duration, pages=1):
                     video_source_url, dt = get_video_source(response.text)
                     await f.write(
                         f"""
-                    <a href="{video_source_url}" target="_blank">
-                        <img src="{img}" alt="https://www.blacktowhite.net" width="200" height="200">
-                    </a>
+    <a href="{video_source_url}" target="_blank">
+        <img src="{img}" alt="https://www.blacktowhite.net" style="max-width:100%;height:auto;" datetime="{dt}">
+    </a>
                     """.replace(
                             "                ", ""
                         )
@@ -88,6 +88,7 @@ video_types = [
     "blowjob-videos",
     "fucking-videos",
     "cuckold-vodeos",
+    "gangbang-videos",
     "videos",
 ]
 
@@ -98,14 +99,14 @@ time_durations = [
 
 video_types_input = get_user_input(video_types)
 time_durations_input = {
-    t: int(input(f"No. of pages for {t}: "))
+    t: range(*[int(i) for i in input(f"No. of pages for {t}: ").split()])
     for t in get_user_input(time_durations)
 }
 
 for video_type in video_types_input:
-    for duration, no_of_pages in time_durations_input.items():
+    for duration, pages_range in time_durations_input.items():
         filename = f"{video_type}-{duration}.html"
         print(f"{filename = }")
         with open(filename, "w") as f:
             f.write("")
-        asyncio.run(main(video_type, duration, no_of_pages))
+        asyncio.run(main(video_type, duration, pages_range))
