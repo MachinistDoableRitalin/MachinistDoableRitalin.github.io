@@ -38,22 +38,22 @@ video_source_urls = []
 async def main(url, keyword, pages):
     async with aiofiles.open(f"{keyword}.html", "a") as f:
         async with httpx.AsyncClient(follow_redirects=True) as client:
-            for page in range(1, pages + 1):
+            for page in tqdm(range(1, pages + 1)):
                 response = await client.get(
                     url.replace("{keyword}", keyword).replace(
                         "{page}", str(page)
                     ),
                     headers=headers,
                 )
-                for video_url, video_img in tqdm(
-                    get_video_urls(response.text)
-                ):
+                for video_url, video_img in get_video_urls(response.text):
                     response = await client.get(video_url, headers=headers)
                     video_source_url = get_video_source(response.text)
                     if (
                         video_source_url
                         and video_source_url not in video_source_urls
                     ):
+                        if not video_source_url:
+                            continue
                         video_source_urls.append(video_source_url)
                         await f.write(
                             f"""\n<a href="{video_source_url}" target="_blank"><img src="{video_img}"></a>\n"""

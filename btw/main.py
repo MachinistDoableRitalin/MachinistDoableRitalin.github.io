@@ -67,14 +67,16 @@ def get_video_source(html_text):
 async def main(video_type, duration, pages_range):
     async with aiofiles.open(f"{video_type}-{duration}.html", "a") as f:
         async with httpx.AsyncClient(follow_redirects=True) as client:
-            for page in pages_range:
+            for page in tqdm(pages_range):
                 response = await client.get(
                     f"https://www.blacktowhite.net/{video_type}/page-{page}?order=view_count&direction=desc&type=video&newer_than={duration}",
                     headers=headers,
                 )
-                for video_url, img in tqdm(get_video_urls(response.text)):
+                for video_url, img in get_video_urls(response.text):
                     response = await client.get(video_url, headers=headers)
                     video_source_url, dt = get_video_source(response.text)
+                    if not video_source_url:
+                        continue
                     await f.write(
                         f"""
         <a href="{video_source_url}" target="_blank">
@@ -100,6 +102,8 @@ async def main_search(url: str, keyword, pages):
                 ):
                     response = await client.get(video_url, headers=headers)
                     video_source_url, dt = get_video_source(response.text)
+                    if not video_source_url:
+                        continue
                     await f.write(
                         f"""
         <a href="{video_source_url}" target="_blank">
