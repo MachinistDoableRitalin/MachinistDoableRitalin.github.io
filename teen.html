@@ -1,0 +1,1367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Video Gallery with Duration Filter</title>
+  <style>
+    :root {
+      --bg: #f8f9fa;
+      --tile-bg: #ffffff;
+      --shadow: rgba(0, 0, 0, 0.1);
+      --radius: 12px;
+      --duration-bg: rgba(0, 0, 0, 0.7);
+      --font: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--font);
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      margin: 1.5rem 0 0.5rem;
+      font-size: 2rem;
+      color: #222;
+      text-align: center;
+    }
+
+    .filter {
+      margin-bottom: 1rem;
+    }
+
+    .filter select {
+      padding: 0.5rem;
+      font-size: 1rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      padding: 20px;
+      max-width: 1300px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .video-tile {
+      position: relative;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      border-radius: var(--radius);
+      background: var(--tile-bg);
+      box-shadow: 0 2px 6px var(--shadow);
+    }
+
+    .video-tile video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: var(--radius);
+      pointer-events: none;
+    }
+
+    .duration {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      background: var(--duration-bg);
+      color: #fff;
+      font-size: 13px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+
+    a {
+      display: block;
+      width: 100%;
+      height: 100%;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    @media (max-width: 1024px) {
+      .grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Video Gallery</h1>
+
+  <div class="filter">
+    <label for="durationFilter">Filter by duration: </label>
+    <select id="durationFilter">
+      <option value="all">All</option>
+      <option value="short">&lt; 4 min</option>
+      <option value="medium">4-20 min</option>
+      <option value="long">&gt; 20 min</option>
+    </select>
+  </div>
+
+  <div class="grid" id="videoGrid">
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8470/8470714-9640bbca86b8400a38cc3ae1937a5e02.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8470/8470714-9640bbca86b8400a38cc3ae1937a5e02.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8470/8470714-9640bbca86b8400a38cc3ae1937a5e02.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8405/8405561-3f1bddd86c67755ab150b453cad704d8.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8405/8405561-3f1bddd86c67755ab150b453cad704d8.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8405/8405561-3f1bddd86c67755ab150b453cad704d8.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8265/8265684-d3c0362a3f1496c65f3ea415482e6ad0.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8265/8265684-d3c0362a3f1496c65f3ea415482e6ad0.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8265/8265684-d3c0362a3f1496c65f3ea415482e6ad0.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8402/8402657-53f1650ec7ac56d41559f4e43a12f855.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8402/8402657-53f1650ec7ac56d41559f4e43a12f855.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8402/8402657-53f1650ec7ac56d41559f4e43a12f855.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8390/8390817-d6df793722c84c4e4b803ede57b941f7.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8390/8390817-d6df793722c84c4e4b803ede57b941f7.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8390/8390817-d6df793722c84c4e4b803ede57b941f7.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8159/8159360-ee109a0fea69b407dbdb465d80549e77.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8159/8159360-ee109a0fea69b407dbdb465d80549e77.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8159/8159360-ee109a0fea69b407dbdb465d80549e77.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8394/8394157-9f79357dbceaa35c7fdd6472d3441f90.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8394/8394157-9f79357dbceaa35c7fdd6472d3441f90.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8394/8394157-9f79357dbceaa35c7fdd6472d3441f90.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8356/8356759-1b08ce5ac04b367707da88bab2e527b0.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8356/8356759-1b08ce5ac04b367707da88bab2e527b0.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8356/8356759-1b08ce5ac04b367707da88bab2e527b0.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8217/8217722-553cd70417a41c861825cfd1c16e0126.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8217/8217722-553cd70417a41c861825cfd1c16e0126.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8217/8217722-553cd70417a41c861825cfd1c16e0126.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8283/8283427-886b756a42d4510efeeb1b2a2ab5e9a3.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8283/8283427-886b756a42d4510efeeb1b2a2ab5e9a3.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8283/8283427-886b756a42d4510efeeb1b2a2ab5e9a3.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8267/8267462-f65e9b561a8fab036265912d14758fe8.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8267/8267462-f65e9b561a8fab036265912d14758fe8.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8267/8267462-f65e9b561a8fab036265912d14758fe8.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8169/8169418-5f28c7fe1d217e544ef043816c78cb4f.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8169/8169418-5f28c7fe1d217e544ef043816c78cb4f.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8169/8169418-5f28c7fe1d217e544ef043816c78cb4f.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7849/7849692-208ca8b7b78e393cf66c590cd69bed0a.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7849/7849692-208ca8b7b78e393cf66c590cd69bed0a.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7849/7849692-208ca8b7b78e393cf66c590cd69bed0a.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8498/8498919-fb343106ba56768b137008cb29c100e1.mov">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8498/8498919-fb343106ba56768b137008cb29c100e1.mov" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8498/8498919-fb343106ba56768b137008cb29c100e1.mov" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8189/8189982-a666e525c1d621fb57551d15b439d318.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8189/8189982-a666e525c1d621fb57551d15b439d318.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8189/8189982-a666e525c1d621fb57551d15b439d318.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8494/8494015-7f11a3ba2772e5c3c842d726cb91cd0e.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8494/8494015-7f11a3ba2772e5c3c842d726cb91cd0e.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8494/8494015-7f11a3ba2772e5c3c842d726cb91cd0e.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8271/8271090-8c42e6fab8d382b62c527ebe67768de0.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8271/8271090-8c42e6fab8d382b62c527ebe67768de0.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8271/8271090-8c42e6fab8d382b62c527ebe67768de0.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8458/8458113-22e6a513a4cf0846b8f5515be311976b.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8458/8458113-22e6a513a4cf0846b8f5515be311976b.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8458/8458113-22e6a513a4cf0846b8f5515be311976b.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8494/8494014-b060919c792d748a6cdecf1b4b1149be.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8494/8494014-b060919c792d748a6cdecf1b4b1149be.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8494/8494014-b060919c792d748a6cdecf1b4b1149be.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8289/8289310-fe1f9ccc5ddb448a7fc5997f2d31f8ed.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8289/8289310-fe1f9ccc5ddb448a7fc5997f2d31f8ed.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8289/8289310-fe1f9ccc5ddb448a7fc5997f2d31f8ed.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8415/8415359-78039faceeb5148c436ab5911ff259f7.mov">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8415/8415359-78039faceeb5148c436ab5911ff259f7.mov" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8415/8415359-78039faceeb5148c436ab5911ff259f7.mov" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7730/7730921-e07d7c2bece1fa1f034bee77b2cc7cc1.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7730/7730921-e07d7c2bece1fa1f034bee77b2cc7cc1.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7730/7730921-e07d7c2bece1fa1f034bee77b2cc7cc1.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7201/7201465-f6d5f12ffca753c60e14f961114fdb6d.webm">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7201/7201465-f6d5f12ffca753c60e14f961114fdb6d.webm" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7201/7201465-f6d5f12ffca753c60e14f961114fdb6d.webm" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7059/7059324-3c47b05abd425ef114f70027e3093657.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7059/7059324-3c47b05abd425ef114f70027e3093657.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7059/7059324-3c47b05abd425ef114f70027e3093657.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7645/7645536-4581aff1ec281066d73ceedd69d07da4.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7645/7645536-4581aff1ec281066d73ceedd69d07da4.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7645/7645536-4581aff1ec281066d73ceedd69d07da4.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8490/8490747-f45165da029a1ab23fea32ff712143cc.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8490/8490747-f45165da029a1ab23fea32ff712143cc.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8490/8490747-f45165da029a1ab23fea32ff712143cc.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8330/8330121-1eabaf03c15a472fee956dc1b7f0a812.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8330/8330121-1eabaf03c15a472fee956dc1b7f0a812.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8330/8330121-1eabaf03c15a472fee956dc1b7f0a812.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8490/8490760-d35924598d301505b9c7471cd0db96c1.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8490/8490760-d35924598d301505b9c7471cd0db96c1.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8490/8490760-d35924598d301505b9c7471cd0db96c1.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8495/8495058-c906daafd7fefc05d521e1d782edf43f.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8495/8495058-c906daafd7fefc05d521e1d782edf43f.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8495/8495058-c906daafd7fefc05d521e1d782edf43f.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8329/8329944-3fed4cd771aaa939762defbfef4f305e.m4v">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8329/8329944-3fed4cd771aaa939762defbfef4f305e.m4v" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8329/8329944-3fed4cd771aaa939762defbfef4f305e.m4v" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8411/8411244-c891898cae817a98704cd8466c58176c.mov">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8411/8411244-c891898cae817a98704cd8466c58176c.mov" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8411/8411244-c891898cae817a98704cd8466c58176c.mov" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8397/8397054-4225abd2f46beebb9a34f7ee18439564.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8397/8397054-4225abd2f46beebb9a34f7ee18439564.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8397/8397054-4225abd2f46beebb9a34f7ee18439564.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8087/8087322-8904d0dd97313705fbb6e199a189d345.mov">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8087/8087322-8904d0dd97313705fbb6e199a189d345.mov" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8087/8087322-8904d0dd97313705fbb6e199a189d345.mov" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8087/8087324-23ae008c68d7e213535ff0d218ce8a22.mov">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8087/8087324-23ae008c68d7e213535ff0d218ce8a22.mov" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8087/8087324-23ae008c68d7e213535ff0d218ce8a22.mov" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8229/8229145-0b31d32703f972e424c921f3ab4ea13e.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8229/8229145-0b31d32703f972e424c921f3ab4ea13e.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8229/8229145-0b31d32703f972e424c921f3ab4ea13e.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/6932/6932907-9f02f4f833e9d090deb77b314e77239e.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/6932/6932907-9f02f4f833e9d090deb77b314e77239e.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/6932/6932907-9f02f4f833e9d090deb77b314e77239e.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8267/8267463-4dd3bfb8dd7fecfe66ccbed9fcbf2ca6.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8267/8267463-4dd3bfb8dd7fecfe66ccbed9fcbf2ca6.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8267/8267463-4dd3bfb8dd7fecfe66ccbed9fcbf2ca6.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7506/7506282-ac58f0672d1b486ead843c54f9a99fb4.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7506/7506282-ac58f0672d1b486ead843c54f9a99fb4.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7506/7506282-ac58f0672d1b486ead843c54f9a99fb4.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7860/7860453-33c440f9bf2b0e3ef7249881b4d37dc8.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7860/7860453-33c440f9bf2b0e3ef7249881b4d37dc8.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7860/7860453-33c440f9bf2b0e3ef7249881b4d37dc8.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8415/8415357-fc06bcc22b21742ee1a1222f49cdb3b5.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8415/8415357-fc06bcc22b21742ee1a1222f49cdb3b5.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8415/8415357-fc06bcc22b21742ee1a1222f49cdb3b5.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7850/7850607-6d77e725f4d1082212090e1b8c1bf9c7.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7850/7850607-6d77e725f4d1082212090e1b8c1bf9c7.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7850/7850607-6d77e725f4d1082212090e1b8c1bf9c7.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7860/7860426-33e735da6cba2f2820131de5d56406e9.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7860/7860426-33e735da6cba2f2820131de5d56406e9.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7860/7860426-33e735da6cba2f2820131de5d56406e9.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8271/8271253-47039b06ffd36ee4b457cac9466676bc.m4v">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8271/8271253-47039b06ffd36ee4b457cac9466676bc.m4v" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8271/8271253-47039b06ffd36ee4b457cac9466676bc.m4v" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8282/8282962-ecc4dc1ce62c3dd98bab48c34573137b.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8282/8282962-ecc4dc1ce62c3dd98bab48c34573137b.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8282/8282962-ecc4dc1ce62c3dd98bab48c34573137b.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7503/7503981-23bf957fb5ecafe9a32e078a39068a33.m4v">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7503/7503981-23bf957fb5ecafe9a32e078a39068a33.m4v" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7503/7503981-23bf957fb5ecafe9a32e078a39068a33.m4v" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8087/8087332-47836dbbe22b3ce37be158099a6464d1.mov">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8087/8087332-47836dbbe22b3ce37be158099a6464d1.mov" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8087/8087332-47836dbbe22b3ce37be158099a6464d1.mov" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7860/7860434-b18b425bddd732a39494308adb669b0c.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7860/7860434-b18b425bddd732a39494308adb669b0c.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7860/7860434-b18b425bddd732a39494308adb669b0c.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8422/8422211-c0e6eb8d30dda8c829dcd8a0d7af2ee8.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8422/8422211-c0e6eb8d30dda8c829dcd8a0d7af2ee8.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8422/8422211-c0e6eb8d30dda8c829dcd8a0d7af2ee8.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8078/8078297-c376d2c75fa3dd5e4cc75186cd1cf47b.m4v">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8078/8078297-c376d2c75fa3dd5e4cc75186cd1cf47b.m4v" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8078/8078297-c376d2c75fa3dd5e4cc75186cd1cf47b.m4v" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7965/7965561-15fbd379f8b5c890cc072ce5e97f92b4.mov">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7965/7965561-15fbd379f8b5c890cc072ce5e97f92b4.mov" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7965/7965561-15fbd379f8b5c890cc072ce5e97f92b4.mov" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8027/8027078-d793722495af26db91c0105b66a074bc.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8027/8027078-d793722495af26db91c0105b66a074bc.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8027/8027078-d793722495af26db91c0105b66a074bc.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/6251/6251645-752e13ef33b50284e3326aa12d899e68.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/6251/6251645-752e13ef33b50284e3326aa12d899e68.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/6251/6251645-752e13ef33b50284e3326aa12d899e68.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8283/8283086-ecf0a559a958be3bbee950c46d131221.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8283/8283086-ecf0a559a958be3bbee950c46d131221.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8283/8283086-ecf0a559a958be3bbee950c46d131221.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8263/8263742-8752e42635541d2f19ce19ef457617b1.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8263/8263742-8752e42635541d2f19ce19ef457617b1.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8263/8263742-8752e42635541d2f19ce19ef457617b1.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7850/7850832-1f7702c3e74e6f15660d084f8592c25a.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7850/7850832-1f7702c3e74e6f15660d084f8592c25a.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7850/7850832-1f7702c3e74e6f15660d084f8592c25a.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8343/8343225-07e0cc0a654316a6437209fa42fe1d8c.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8343/8343225-07e0cc0a654316a6437209fa42fe1d8c.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8343/8343225-07e0cc0a654316a6437209fa42fe1d8c.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8246/8246382-47b88ef0ac2f3808c7c49db9f4ebd9af.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8246/8246382-47b88ef0ac2f3808c7c49db9f4ebd9af.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8246/8246382-47b88ef0ac2f3808c7c49db9f4ebd9af.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7863/7863703-6d95060eba3b352de8d1ed1d1371850d.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7863/7863703-6d95060eba3b352de8d1ed1d1371850d.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7863/7863703-6d95060eba3b352de8d1ed1d1371850d.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8127/8127784-d7b7110c03b333b86c5585851648d46f.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8127/8127784-d7b7110c03b333b86c5585851648d46f.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8127/8127784-d7b7110c03b333b86c5585851648d46f.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/6990/6990852-7b90ef8f227cf7a2e6144a4bc5026c86.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/6990/6990852-7b90ef8f227cf7a2e6144a4bc5026c86.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/6990/6990852-7b90ef8f227cf7a2e6144a4bc5026c86.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8387/8387476-d9d6998c34073a80a29090801213c459.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8387/8387476-d9d6998c34073a80a29090801213c459.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8387/8387476-d9d6998c34073a80a29090801213c459.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8386/8386555-3be7c68b969338de97e92ae005588ccf.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8386/8386555-3be7c68b969338de97e92ae005588ccf.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8386/8386555-3be7c68b969338de97e92ae005588ccf.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8492/8492594-4ec215b9b2059463dc9b4ba65186b1ff.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8492/8492594-4ec215b9b2059463dc9b4ba65186b1ff.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8492/8492594-4ec215b9b2059463dc9b4ba65186b1ff.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8124/8124416-7caa83ccd06ba1cac35d41a408db59d2.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8124/8124416-7caa83ccd06ba1cac35d41a408db59d2.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8124/8124416-7caa83ccd06ba1cac35d41a408db59d2.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8479/8479364-fb9ad5cfad0146ac618f79c8cb3935eb.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8479/8479364-fb9ad5cfad0146ac618f79c8cb3935eb.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8479/8479364-fb9ad5cfad0146ac618f79c8cb3935eb.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7860/7860502-3a3fee15635906cd12eec010ecb379b2.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7860/7860502-3a3fee15635906cd12eec010ecb379b2.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7860/7860502-3a3fee15635906cd12eec010ecb379b2.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8224/8224037-036593b6aeb80c37e734544c38977e15.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8224/8224037-036593b6aeb80c37e734544c38977e15.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8224/8224037-036593b6aeb80c37e734544c38977e15.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8433/8433876-ad1d5ef4c1d6fc27ca57f98f02e11a02.mov">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8433/8433876-ad1d5ef4c1d6fc27ca57f98f02e11a02.mov" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8433/8433876-ad1d5ef4c1d6fc27ca57f98f02e11a02.mov" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7683/7683978-ac050458fa658eab7f353296cf2a9a3b.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7683/7683978-ac050458fa658eab7f353296cf2a9a3b.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7683/7683978-ac050458fa658eab7f353296cf2a9a3b.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8075/8075256-b0564fb067aaed6ed649375d0417c75d.m4v">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8075/8075256-b0564fb067aaed6ed649375d0417c75d.m4v" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8075/8075256-b0564fb067aaed6ed649375d0417c75d.m4v" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7334/7334440-cc0a0f01d9299d40cb949da10180657a.mov">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7334/7334440-cc0a0f01d9299d40cb949da10180657a.mov" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7334/7334440-cc0a0f01d9299d40cb949da10180657a.mov" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/6192/6192634-9c50221d69e4798a7dcf828f6ceee861.mov">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/6192/6192634-9c50221d69e4798a7dcf828f6ceee861.mov" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/6192/6192634-9c50221d69e4798a7dcf828f6ceee861.mov" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7544/7544281-ca520fdab3efab7bfecfff4f95f0f75c.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7544/7544281-ca520fdab3efab7bfecfff4f95f0f75c.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7544/7544281-ca520fdab3efab7bfecfff4f95f0f75c.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7860/7860446-e8ab9269171a349304ef2c186415044a.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7860/7860446-e8ab9269171a349304ef2c186415044a.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7860/7860446-e8ab9269171a349304ef2c186415044a.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8479/8479209-dac4f1f37d07ceff9cb98b895ce6cd63.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8479/8479209-dac4f1f37d07ceff9cb98b895ce6cd63.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8479/8479209-dac4f1f37d07ceff9cb98b895ce6cd63.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7544/7544764-1afd5511400e46eb89778f3b0a985dc7.mov">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7544/7544764-1afd5511400e46eb89778f3b0a985dc7.mov" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7544/7544764-1afd5511400e46eb89778f3b0a985dc7.mov" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8042/8042222-5bbd043fb38f95477443e0bca1e79544.mov">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8042/8042222-5bbd043fb38f95477443e0bca1e79544.mov" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8042/8042222-5bbd043fb38f95477443e0bca1e79544.mov" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7555/7555383-a67fbf0ad9c77c47c8af0224252a68b0.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7555/7555383-a67fbf0ad9c77c47c8af0224252a68b0.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7555/7555383-a67fbf0ad9c77c47c8af0224252a68b0.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8488/8488793-67f9099ae459a7d18fef3fd1be080e85.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8488/8488793-67f9099ae459a7d18fef3fd1be080e85.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8488/8488793-67f9099ae459a7d18fef3fd1be080e85.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7552/7552330-1f6f2606442791c53f5195831b7dd06c.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7552/7552330-1f6f2606442791c53f5195831b7dd06c.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7552/7552330-1f6f2606442791c53f5195831b7dd06c.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8368/8368368-b32c9bda1d220c6d13bf09c1e4e17ea5.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8368/8368368-b32c9bda1d220c6d13bf09c1e4e17ea5.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8368/8368368-b32c9bda1d220c6d13bf09c1e4e17ea5.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8087/8087318-1b7c70bafa9273379e5d394bc746d736.mov">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8087/8087318-1b7c70bafa9273379e5d394bc746d736.mov" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8087/8087318-1b7c70bafa9273379e5d394bc746d736.mov" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8151/8151604-cde1c9c4cb4251cfdf46d0eef40b4258.mov">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8151/8151604-cde1c9c4cb4251cfdf46d0eef40b4258.mov" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8151/8151604-cde1c9c4cb4251cfdf46d0eef40b4258.mov" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7523/7523302-a1e6c8a3815c7fab3fe42c7772af4948.mov">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7523/7523302-a1e6c8a3815c7fab3fe42c7772af4948.mov" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7523/7523302-a1e6c8a3815c7fab3fe42c7772af4948.mov" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7806/7806519-2d7d99c5ff9fcf658e51c93cdfe05225.m4v">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7806/7806519-2d7d99c5ff9fcf658e51c93cdfe05225.m4v" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7806/7806519-2d7d99c5ff9fcf658e51c93cdfe05225.m4v" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8247/8247773-bd0fc688142f63cf391503522d2a84f0.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8247/8247773-bd0fc688142f63cf391503522d2a84f0.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8247/8247773-bd0fc688142f63cf391503522d2a84f0.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7334/7334398-9fab406ad29ffd816df66b9f94854005.mov">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7334/7334398-9fab406ad29ffd816df66b9f94854005.mov" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7334/7334398-9fab406ad29ffd816df66b9f94854005.mov" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8240/8240418-bd0fc688142f63cf391503522d2a84f0.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8240/8240418-bd0fc688142f63cf391503522d2a84f0.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8240/8240418-bd0fc688142f63cf391503522d2a84f0.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7808/7808049-e65c9927485848cb10f2f1e039cd79d6.m4v">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7808/7808049-e65c9927485848cb10f2f1e039cd79d6.m4v" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7808/7808049-e65c9927485848cb10f2f1e039cd79d6.m4v" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8345/8345941-a418232c8899ba9a2993a7ea9d5fff3c.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8345/8345941-a418232c8899ba9a2993a7ea9d5fff3c.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8345/8345941-a418232c8899ba9a2993a7ea9d5fff3c.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7118/7118545-7b4e9e997cdb7ebbe352ed7a5d3559a9.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7118/7118545-7b4e9e997cdb7ebbe352ed7a5d3559a9.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7118/7118545-7b4e9e997cdb7ebbe352ed7a5d3559a9.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8184/8184954-316fc898c207fb0cb20195544339dfb3.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8184/8184954-316fc898c207fb0cb20195544339dfb3.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8184/8184954-316fc898c207fb0cb20195544339dfb3.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7423/7423658-689c6727ad3ddf1e98c9bb28fb72d07d.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7423/7423658-689c6727ad3ddf1e98c9bb28fb72d07d.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7423/7423658-689c6727ad3ddf1e98c9bb28fb72d07d.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7523/7523295-46debb4b9f66fccabac2f18337d78916.mov">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7523/7523295-46debb4b9f66fccabac2f18337d78916.mov" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7523/7523295-46debb4b9f66fccabac2f18337d78916.mov" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7170/7170138-53bc0babd2bb1e120116d4605a98e0ea.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7170/7170138-53bc0babd2bb1e120116d4605a98e0ea.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7170/7170138-53bc0babd2bb1e120116d4605a98e0ea.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/5922/5922357-d7ddef73b54198562257029e65ad0a86.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/5922/5922357-d7ddef73b54198562257029e65ad0a86.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/5922/5922357-d7ddef73b54198562257029e65ad0a86.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8240/8240417-cf0f2d43ae325daf4c910bcf8d07d0f1.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8240/8240417-cf0f2d43ae325daf4c910bcf8d07d0f1.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8240/8240417-cf0f2d43ae325daf4c910bcf8d07d0f1.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8036/8036255-426c51c9bc84d7b0a58df0dc988dbabe.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8036/8036255-426c51c9bc84d7b0a58df0dc988dbabe.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8036/8036255-426c51c9bc84d7b0a58df0dc988dbabe.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8274/8274651-4b6bddc2816ebc1badd762d4a560ceca.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8274/8274651-4b6bddc2816ebc1badd762d4a560ceca.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8274/8274651-4b6bddc2816ebc1badd762d4a560ceca.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7334/7334397-9fa7b8f62c80c14d0bc058ee308ee78e.mov">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7334/7334397-9fa7b8f62c80c14d0bc058ee308ee78e.mov" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7334/7334397-9fa7b8f62c80c14d0bc058ee308ee78e.mov" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8246/8246823-ba82987387ba3a9bb3b971938589551e.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8246/8246823-ba82987387ba3a9bb3b971938589551e.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8246/8246823-ba82987387ba3a9bb3b971938589551e.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8417/8417000-d295152898d889bf7f2b97456e27d6a8.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8417/8417000-d295152898d889bf7f2b97456e27d6a8.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8417/8417000-d295152898d889bf7f2b97456e27d6a8.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/6256/6256347-7f2b74b296d68d43384a566613d8e174.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/6256/6256347-7f2b74b296d68d43384a566613d8e174.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/6256/6256347-7f2b74b296d68d43384a566613d8e174.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8247/8247775-4c695c1814fb3f2e87703591270c35ce.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8247/8247775-4c695c1814fb3f2e87703591270c35ce.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8247/8247775-4c695c1814fb3f2e87703591270c35ce.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/6932/6932915-fae85d401bcd9f58607d0ae63fa60a81.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/6932/6932915-fae85d401bcd9f58607d0ae63fa60a81.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/6932/6932915-fae85d401bcd9f58607d0ae63fa60a81.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7588/7588727-f1dcd19fd6ffacf44e4916b5253b00ca.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7588/7588727-f1dcd19fd6ffacf44e4916b5253b00ca.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7588/7588727-f1dcd19fd6ffacf44e4916b5253b00ca.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/6074/6074561-6613b3a145c198dd6f47388b7bd33175.mov">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/6074/6074561-6613b3a145c198dd6f47388b7bd33175.mov" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/6074/6074561-6613b3a145c198dd6f47388b7bd33175.mov" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7047/7047351-4d3dabd090b00886ff9dc566118a5718.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7047/7047351-4d3dabd090b00886ff9dc566118a5718.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7047/7047351-4d3dabd090b00886ff9dc566118a5718.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8148/8148795-930858cffda476d1cdf2246b93817342.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8148/8148795-930858cffda476d1cdf2246b93817342.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8148/8148795-930858cffda476d1cdf2246b93817342.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7520/7520271-4ed03c7cca45217c33ceddf2ad899c11.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7520/7520271-4ed03c7cca45217c33ceddf2ad899c11.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7520/7520271-4ed03c7cca45217c33ceddf2ad899c11.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7489/7489672-645b08e0a9c1c938eb1dc77c0a1ee9bf.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7489/7489672-645b08e0a9c1c938eb1dc77c0a1ee9bf.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7489/7489672-645b08e0a9c1c938eb1dc77c0a1ee9bf.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7830/7830964-c0b1fd01ac5a4849ef2ffb8fc5533b5b.mov">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7830/7830964-c0b1fd01ac5a4849ef2ffb8fc5533b5b.mov" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7830/7830964-c0b1fd01ac5a4849ef2ffb8fc5533b5b.mov" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/5655/5655336-3dd88a1064cb95f2d8e64c5a01f8b5c6.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/5655/5655336-3dd88a1064cb95f2d8e64c5a01f8b5c6.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/5655/5655336-3dd88a1064cb95f2d8e64c5a01f8b5c6.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/6916/6916222-f5e8c72e7b12f243461839e12157a943.mov">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/6916/6916222-f5e8c72e7b12f243461839e12157a943.mov" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/6916/6916222-f5e8c72e7b12f243461839e12157a943.mov" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8030/8030177-1d11ca90ed1fe07695c967812b2cf495.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8030/8030177-1d11ca90ed1fe07695c967812b2cf495.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8030/8030177-1d11ca90ed1fe07695c967812b2cf495.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/5660/5660984-b0470dd0c9e14a07846b21c6d47563e0.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/5660/5660984-b0470dd0c9e14a07846b21c6d47563e0.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/5660/5660984-b0470dd0c9e14a07846b21c6d47563e0.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7664/7664987-ca1348809a9404d8b897b294e07435a4.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7664/7664987-ca1348809a9404d8b897b294e07435a4.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7664/7664987-ca1348809a9404d8b897b294e07435a4.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8191/8191352-5ad48dbeb9cf5157d2ec7d1f45f50e5f.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8191/8191352-5ad48dbeb9cf5157d2ec7d1f45f50e5f.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8191/8191352-5ad48dbeb9cf5157d2ec7d1f45f50e5f.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7033/7033227-fc930efe24a3358ec729818393414b99.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7033/7033227-fc930efe24a3358ec729818393414b99.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7033/7033227-fc930efe24a3358ec729818393414b99.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7971/7971400-f2dd63766ac6c24b87f6c524851c8f58.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7971/7971400-f2dd63766ac6c24b87f6c524851c8f58.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7971/7971400-f2dd63766ac6c24b87f6c524851c8f58.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/6624/6624228-4fe326b94dd375b77e49002f2807f277.mov">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/6624/6624228-4fe326b94dd375b77e49002f2807f277.mov" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/6624/6624228-4fe326b94dd375b77e49002f2807f277.mov" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7378/7378873-e56886af48d11205e9def6bbc0eaf438.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7378/7378873-e56886af48d11205e9def6bbc0eaf438.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7378/7378873-e56886af48d11205e9def6bbc0eaf438.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7752/7752081-1a3dd715307818011b46388c43e2dd2d.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7752/7752081-1a3dd715307818011b46388c43e2dd2d.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7752/7752081-1a3dd715307818011b46388c43e2dd2d.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8222/8222427-16cde60e1e4d0c40fad1e4fe77bcca4a.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8222/8222427-16cde60e1e4d0c40fad1e4fe77bcca4a.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8222/8222427-16cde60e1e4d0c40fad1e4fe77bcca4a.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/6881/6881830-9fbdd85499c350879c7cb7259f2398e7.mov">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/6881/6881830-9fbdd85499c350879c7cb7259f2398e7.mov" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/6881/6881830-9fbdd85499c350879c7cb7259f2398e7.mov" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7914/7914358-cb4c8c05d8ef3c97466290958d1118d7.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7914/7914358-cb4c8c05d8ef3c97466290958d1118d7.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7914/7914358-cb4c8c05d8ef3c97466290958d1118d7.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7789/7789264-bf200840c156a064b1926f3a65c2ea23.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7789/7789264-bf200840c156a064b1926f3a65c2ea23.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7789/7789264-bf200840c156a064b1926f3a65c2ea23.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/5619/5619503-ede2f37676e09af67cd459d5a32c423e.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/5619/5619503-ede2f37676e09af67cd459d5a32c423e.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/5619/5619503-ede2f37676e09af67cd459d5a32c423e.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8292/8292323-9d5a4f2316d8e6b3b86a9a321fbb7799.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8292/8292323-9d5a4f2316d8e6b3b86a9a321fbb7799.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8292/8292323-9d5a4f2316d8e6b3b86a9a321fbb7799.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/6969/6969749-30844ab891b7b4dbac20c0e914315bc3.mov">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/6969/6969749-30844ab891b7b4dbac20c0e914315bc3.mov" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/6969/6969749-30844ab891b7b4dbac20c0e914315bc3.mov" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8191/8191354-454c04d1328c812beccc5137e8872715.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8191/8191354-454c04d1328c812beccc5137e8872715.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8191/8191354-454c04d1328c812beccc5137e8872715.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8263/8263168-28b5e7d47ef37b12298339f73398d225.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8263/8263168-28b5e7d47ef37b12298339f73398d225.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8263/8263168-28b5e7d47ef37b12298339f73398d225.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7806/7806431-45bf650403da4041a0da31fc1d128f6d.m4v">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7806/7806431-45bf650403da4041a0da31fc1d128f6d.m4v" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7806/7806431-45bf650403da4041a0da31fc1d128f6d.m4v" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7785/7785560-4c66cadca96b1d1f528b9dccd24b5417.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7785/7785560-4c66cadca96b1d1f528b9dccd24b5417.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7785/7785560-4c66cadca96b1d1f528b9dccd24b5417.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/6916/6916188-2133e712465ae0e610c7c49b629fae27.mov">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/6916/6916188-2133e712465ae0e610c7c49b629fae27.mov" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/6916/6916188-2133e712465ae0e610c7c49b629fae27.mov" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7893/7893168-6232a6fdc62d52ae1b6492078a709b1e.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7893/7893168-6232a6fdc62d52ae1b6492078a709b1e.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7893/7893168-6232a6fdc62d52ae1b6492078a709b1e.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7547/7547522-3458888df8fb8ffa3b6af51798df38b7.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7547/7547522-3458888df8fb8ffa3b6af51798df38b7.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7547/7547522-3458888df8fb8ffa3b6af51798df38b7.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7406/7406339-553aa32b56341987cd1e6c900c5b649f.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7406/7406339-553aa32b56341987cd1e6c900c5b649f.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7406/7406339-553aa32b56341987cd1e6c900c5b649f.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7242/7242685-39e84f2c3f09b3b4caaa4f4f1101376b.mov">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7242/7242685-39e84f2c3f09b3b4caaa4f4f1101376b.mov" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7242/7242685-39e84f2c3f09b3b4caaa4f4f1101376b.mov" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7980/7980000-d586c3bf617e579c4420a1f5a0c51636.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7980/7980000-d586c3bf617e579c4420a1f5a0c51636.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7980/7980000-d586c3bf617e579c4420a1f5a0c51636.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8078/8078212-9f49560da2de7e0c20e9f244098737af.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8078/8078212-9f49560da2de7e0c20e9f244098737af.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8078/8078212-9f49560da2de7e0c20e9f244098737af.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7692/7692713-a8edac278922f1e98cf1c1a69e1e0fe4.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7692/7692713-a8edac278922f1e98cf1c1a69e1e0fe4.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7692/7692713-a8edac278922f1e98cf1c1a69e1e0fe4.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8285/8285260-a75847805af2d0bd471e5efed599b410.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8285/8285260-a75847805af2d0bd471e5efed599b410.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8285/8285260-a75847805af2d0bd471e5efed599b410.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7229/7229931-f8414103f8971c0d8b58e39d0fafab0c.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7229/7229931-f8414103f8971c0d8b58e39d0fafab0c.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7229/7229931-f8414103f8971c0d8b58e39d0fafab0c.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/6255/6255969-2cc7e54eecdd3a8fd6ae825ceb212e9c.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/6255/6255969-2cc7e54eecdd3a8fd6ae825ceb212e9c.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/6255/6255969-2cc7e54eecdd3a8fd6ae825ceb212e9c.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/6932/6932905-166a9f3103a4d0fdda8e98a8b4d19e27.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/6932/6932905-166a9f3103a4d0fdda8e98a8b4d19e27.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/6932/6932905-166a9f3103a4d0fdda8e98a8b4d19e27.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/6614/6614803-03c83a90aa70e57fee6aa8c9ebb713bd.mov">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/6614/6614803-03c83a90aa70e57fee6aa8c9ebb713bd.mov" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/6614/6614803-03c83a90aa70e57fee6aa8c9ebb713bd.mov" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/6519/6519854-f9c3eb154d0aead661a22ebbaf26166b.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/6519/6519854-f9c3eb154d0aead661a22ebbaf26166b.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/6519/6519854-f9c3eb154d0aead661a22ebbaf26166b.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7902/7902639-7a64c68a71810ac4e523e96689d08bb0.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7902/7902639-7a64c68a71810ac4e523e96689d08bb0.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7902/7902639-7a64c68a71810ac4e523e96689d08bb0.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/6614/6614733-e9d7f033888f9270d9b4540b7c6be2c0.mov">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/6614/6614733-e9d7f033888f9270d9b4540b7c6be2c0.mov" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/6614/6614733-e9d7f033888f9270d9b4540b7c6be2c0.mov" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8426/8426770-9dec13f959f150ef7ca020a68948054a.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8426/8426770-9dec13f959f150ef7ca020a68948054a.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8426/8426770-9dec13f959f150ef7ca020a68948054a.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7641/7641049-eb2ef6e2af722456070e88195da8557a.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7641/7641049-eb2ef6e2af722456070e88195da8557a.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7641/7641049-eb2ef6e2af722456070e88195da8557a.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7085/7085536-5d799240657d91cbd2945ce7294fc31b.mov">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7085/7085536-5d799240657d91cbd2945ce7294fc31b.mov" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7085/7085536-5d799240657d91cbd2945ce7294fc31b.mov" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/6883/6883874-3756e3dc2c93d7ffb983d1221b70b421.mov">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/6883/6883874-3756e3dc2c93d7ffb983d1221b70b421.mov" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/6883/6883874-3756e3dc2c93d7ffb983d1221b70b421.mov" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7255/7255465-1f95b01ff38e89f445ddd4a1e49bea12.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7255/7255465-1f95b01ff38e89f445ddd4a1e49bea12.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7255/7255465-1f95b01ff38e89f445ddd4a1e49bea12.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/6638/6638941-d30e6ea6ddf646c04ed93b556b2cac87.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/6638/6638941-d30e6ea6ddf646c04ed93b556b2cac87.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/6638/6638941-d30e6ea6ddf646c04ed93b556b2cac87.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7382/7382311-f47f8d08991e4cc83c723d1c1eaf108f.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7382/7382311-f47f8d08991e4cc83c723d1c1eaf108f.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7382/7382311-f47f8d08991e4cc83c723d1c1eaf108f.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8010/8010592-612f58e236a7a7f780ac36c5965762ab.mov">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8010/8010592-612f58e236a7a7f780ac36c5965762ab.mov" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8010/8010592-612f58e236a7a7f780ac36c5965762ab.mov" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7063/7063156-0d55b57a3ca2bb35fa6d703918a00321.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7063/7063156-0d55b57a3ca2bb35fa6d703918a00321.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7063/7063156-0d55b57a3ca2bb35fa6d703918a00321.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/6729/6729708-1328ec3b1c2a44d881373f2661c1d246.m4v">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/6729/6729708-1328ec3b1c2a44d881373f2661c1d246.m4v" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/6729/6729708-1328ec3b1c2a44d881373f2661c1d246.m4v" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7789/7789091-37f5e4b6ae4bc9e1ff020bb33dd4383a.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7789/7789091-37f5e4b6ae4bc9e1ff020bb33dd4383a.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7789/7789091-37f5e4b6ae4bc9e1ff020bb33dd4383a.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7316/7316177-11a20479598943f9fb391ad834b9de96.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7316/7316177-11a20479598943f9fb391ad834b9de96.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7316/7316177-11a20479598943f9fb391ad834b9de96.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7579/7579332-74634ec39adfceef2bb02d6d472381c5.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7579/7579332-74634ec39adfceef2bb02d6d472381c5.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7579/7579332-74634ec39adfceef2bb02d6d472381c5.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7576/7576817-a67fbf0ad9c77c47c8af0224252a68b0.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7576/7576817-a67fbf0ad9c77c47c8af0224252a68b0.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7576/7576817-a67fbf0ad9c77c47c8af0224252a68b0.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7255/7255481-08055e62eb4fb8033e236945353cda46.mov">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7255/7255481-08055e62eb4fb8033e236945353cda46.mov" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7255/7255481-08055e62eb4fb8033e236945353cda46.mov" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7690/7690072-bf2c22ed115ba1de63fe18be0b43af2f.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7690/7690072-bf2c22ed115ba1de63fe18be0b43af2f.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7690/7690072-bf2c22ed115ba1de63fe18be0b43af2f.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7491/7491046-b9b396f2e567bea8a239258f88c9db6e.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7491/7491046-b9b396f2e567bea8a239258f88c9db6e.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7491/7491046-b9b396f2e567bea8a239258f88c9db6e.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7172/7172467-69c4dd19b6f2d146ea561016c126315c.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7172/7172467-69c4dd19b6f2d146ea561016c126315c.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7172/7172467-69c4dd19b6f2d146ea561016c126315c.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7082/7082588-bb263754dc86be04b1b0964a054f34fe.mov">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7082/7082588-bb263754dc86be04b1b0964a054f34fe.mov" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7082/7082588-bb263754dc86be04b1b0964a054f34fe.mov" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7528/7528840-0020c18a2eb94c98128f137ca1541de1.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7528/7528840-0020c18a2eb94c98128f137ca1541de1.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7528/7528840-0020c18a2eb94c98128f137ca1541de1.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7401/7401556-bec5f1a6a2c60569490c51a81b9bf25f.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7401/7401556-bec5f1a6a2c60569490c51a81b9bf25f.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7401/7401556-bec5f1a6a2c60569490c51a81b9bf25f.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8010/8010571-f784494179bce1ef5183a48dfe020053.mov">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8010/8010571-f784494179bce1ef5183a48dfe020053.mov" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8010/8010571-f784494179bce1ef5183a48dfe020053.mov" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/6134/6134195-8fd6c4a75fc5fe2c2db73e042d5513d3.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/6134/6134195-8fd6c4a75fc5fe2c2db73e042d5513d3.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/6134/6134195-8fd6c4a75fc5fe2c2db73e042d5513d3.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8032/8032800-b863d0806c99bb8a7fa7c609fd32d862.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8032/8032800-b863d0806c99bb8a7fa7c609fd32d862.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8032/8032800-b863d0806c99bb8a7fa7c609fd32d862.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/6940/6940512-e48117ef03ec5c19c141f1df4701f9e0.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/6940/6940512-e48117ef03ec5c19c141f1df4701f9e0.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/6940/6940512-e48117ef03ec5c19c141f1df4701f9e0.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/8002/8002238-8d8d51457fbcbd72bac37f2bfd000735.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/8002/8002238-8d8d51457fbcbd72bac37f2bfd000735.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/8002/8002238-8d8d51457fbcbd72bac37f2bfd000735.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/6612/6612234-9c6e259da547b9dcac938486e5da8c08.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/6612/6612234-9c6e259da547b9dcac938486e5da8c08.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/6612/6612234-9c6e259da547b9dcac938486e5da8c08.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7255/7255474-5a2220c1b7cb426b087394c8122be4ef.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7255/7255474-5a2220c1b7cb426b087394c8122be4ef.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7255/7255474-5a2220c1b7cb426b087394c8122be4ef.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7583/7583413-127cb2c48cb5a2f91b95bd632aa759a4.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7583/7583413-127cb2c48cb5a2f91b95bd632aa759a4.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7583/7583413-127cb2c48cb5a2f91b95bd632aa759a4.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7881/7881080-8204983d51b4e9dc3476161e45343caf.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7881/7881080-8204983d51b4e9dc3476161e45343caf.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7881/7881080-8204983d51b4e9dc3476161e45343caf.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/6497/6497787-61ff38de8a1ae0abdda0eb3d79e92765.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/6497/6497787-61ff38de8a1ae0abdda0eb3d79e92765.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/6497/6497787-61ff38de8a1ae0abdda0eb3d79e92765.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/5212/5212699-7485b7fa89d4a3d8a04bc930a6d7b9e2.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/5212/5212699-7485b7fa89d4a3d8a04bc930a6d7b9e2.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/5212/5212699-7485b7fa89d4a3d8a04bc930a6d7b9e2.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7185/7185802-8dd5dfa6e78a425815a208a5068c4b2f.m4v">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7185/7185802-8dd5dfa6e78a425815a208a5068c4b2f.m4v" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7185/7185802-8dd5dfa6e78a425815a208a5068c4b2f.m4v" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/6882/6882596-0460a31559f6bbc2013a40cabdb0d5ec.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/6882/6882596-0460a31559f6bbc2013a40cabdb0d5ec.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/6882/6882596-0460a31559f6bbc2013a40cabdb0d5ec.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/5684/5684331-6961283a48dfddc0c2be92159becffc7.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/5684/5684331-6961283a48dfddc0c2be92159becffc7.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/5684/5684331-6961283a48dfddc0c2be92159becffc7.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/6561/6561960-8407f571e50c0a6a7465c4dfb2b97806.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/6561/6561960-8407f571e50c0a6a7465c4dfb2b97806.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/6561/6561960-8407f571e50c0a6a7465c4dfb2b97806.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/6599/6599802-614400e5e2b2ca138be008c729fcebe5.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/6599/6599802-614400e5e2b2ca138be008c729fcebe5.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/6599/6599802-614400e5e2b2ca138be008c729fcebe5.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7530/7530686-a32e7146dee281d5b5eced0af553732f.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7530/7530686-a32e7146dee281d5b5eced0af553732f.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7530/7530686-a32e7146dee281d5b5eced0af553732f.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7242/7242687-d719e1d8089588f2b5e0345f28774079.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7242/7242687-d719e1d8089588f2b5e0345f28774079.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7242/7242687-d719e1d8089588f2b5e0345f28774079.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7179/7179965-32e3b438dfff0e3774d352b59fed08a1.m4v">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7179/7179965-32e3b438dfff0e3774d352b59fed08a1.m4v" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7179/7179965-32e3b438dfff0e3774d352b59fed08a1.m4v" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7441/7441433-cb9da4fdb9d2eb962ea37fa382563f10.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7441/7441433-cb9da4fdb9d2eb962ea37fa382563f10.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7441/7441433-cb9da4fdb9d2eb962ea37fa382563f10.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7242/7242403-b57a0f483a593720af5d93a6336ce478.mov">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7242/7242403-b57a0f483a593720af5d93a6336ce478.mov" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7242/7242403-b57a0f483a593720af5d93a6336ce478.mov" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7364/7364344-6f9052acef941eaeecb5962f7a10b308.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7364/7364344-6f9052acef941eaeecb5962f7a10b308.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7364/7364344-6f9052acef941eaeecb5962f7a10b308.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7465/7465646-bb76b18ca248ffeb27d21414ed5e7d6c.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7465/7465646-bb76b18ca248ffeb27d21414ed5e7d6c.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7465/7465646-bb76b18ca248ffeb27d21414ed5e7d6c.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/6256/6256416-194e139763beaa7a8797167e9ced4b7a.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/6256/6256416-194e139763beaa7a8797167e9ced4b7a.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/6256/6256416-194e139763beaa7a8797167e9ced4b7a.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7924/7924536-20b34896ac18d75e09846dd51e90d333.mov">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7924/7924536-20b34896ac18d75e09846dd51e90d333.mov" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7924/7924536-20b34896ac18d75e09846dd51e90d333.mov" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7441/7441497-754123a028c07768b5fa8984be21bb8b.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7441/7441497-754123a028c07768b5fa8984be21bb8b.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7441/7441497-754123a028c07768b5fa8984be21bb8b.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/6561/6561959-7d10e4a2e29ba7fc78515317e0d7b205.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/6561/6561959-7d10e4a2e29ba7fc78515317e0d7b205.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/6561/6561959-7d10e4a2e29ba7fc78515317e0d7b205.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/7364/7364029-0376add06c3fec4af3b77d649cccb9f9.mp4">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/7364/7364029-0376add06c3fec4af3b77d649cccb9f9.mp4" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/7364/7364029-0376add06c3fec4af3b77d649cccb9f9.mp4" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div> 
+    <div class="video-tile" data-video-url="https://www.blacktowhite.net/data/xfmg/video/6315/6315624-59eae6cbadf018713df66384ef9eed25.mov">
+      <a href="https://www.blacktowhite.net/data/xfmg/video/6315/6315624-59eae6cbadf018713df66384ef9eed25.mov" target="_blank">
+        <video src="https://www.blacktowhite.net/data/xfmg/video/6315/6315624-59eae6cbadf018713df66384ef9eed25.mov" preload="metadata" muted></video>
+        <span class="duration">Loading...</span>
+      </a>
+    </div></div>
+
+  <script>
+    function formatTime(seconds) {
+      const mins = Math.floor(seconds / 60);
+      const secs = Math.floor(seconds % 60);
+      return `${mins}:${secs.toString().padStart(2, '0')}`;
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const tiles = document.querySelectorAll('.video-tile');
+      const filter = document.getElementById('durationFilter');
+
+      tiles.forEach(tile => {
+        const video = tile.querySelector('video');
+        const span = tile.querySelector('.duration');
+
+        video.addEventListener('loadedmetadata', () => {
+          const duration = video.duration;
+          span.textContent = formatTime(duration);
+          tile.setAttribute('data-duration', duration);
+        });
+
+        video.addEventListener('error', () => {
+          span.textContent = 'N/A';
+          tile.setAttribute('data-duration', -1);
+        });
+      });
+
+      filter.addEventListener('change', () => {
+        const val = filter.value;
+
+        tiles.forEach(tile => {
+          const d = parseFloat(tile.getAttribute('data-duration') || -1);
+          if (val === 'all') {
+            tile.style.display = '';
+          } else if (val === 'short' && d > 0 && d < 240) {
+            tile.style.display = '';
+          } else if (val === 'medium' && d >= 240 && d <= 1200) {
+            tile.style.display = '';
+          } else if (val === 'long' && d > 1200) {
+            tile.style.display = '';
+          } else {
+            tile.style.display = 'none';
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>
